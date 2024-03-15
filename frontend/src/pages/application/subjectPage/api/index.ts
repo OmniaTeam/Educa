@@ -1,0 +1,1 @@
+export { getSubject } from './getSubject'

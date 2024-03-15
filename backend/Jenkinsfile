@@ -1,0 +1,114 @@
+pipeline {
+    agent any
+
+
+    stages {
+
+
+        stage('Build') {
+                    when {
+                        branch 'main'
+                    }
+                    steps {
+                        sh './gradlew build --scan -x test'
+                    }
+
+                }
+
+        // General build strategy
+        stage('bootJar') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh './gradlew bootJar'
+            }
+            post {
+
+                cleanup {
+                    dir('build') {
+                        //sh 'rm -rf docs'
+                        sh 'rm -rf reports'
+                        //sh 'rm -rf test-results'
+                    }
+                }
+
+            }
+        }
+
+
+
+        stage('Delivery') {
+            when {
+                branch 'main'
+                }
+            steps {
+                script {
+                    // Копирование JAR файла на удаленный сервер через scp с использованием sshagent
+
+                        sh "rsync -avz --delete --force build/libs/ root@104.248.133.133:/var/www/educa.theomnia.ru/app"
+
+                }
+            }
+
+        }
+
+        stage('Run') {
+            when {
+                branch 'main'
+                 }
+            steps {
+                script {
+                    // Запуск демона сервиса на удаленном сервере
+
+                    sh 'ssh root@104.248.133.133 "sudo systemctl restart educa.service"'
+
+                }
+
+            }
+            post {
+                success {
+                    echo 'Ждем 30 секунд...'
+                    sleep time: 30, unit: 'SECONDS'
+                }
+            }
+        }
+
+        stage('Status') {
+                    when {
+                        branch 'main'
+                        }
+                    steps {
+                        script {
+                            // Запуск демона сервиса на удаленном сервере
+
+                            sh 'ssh root@104.248.133.133 "sudo systemctl status educa.service"'
+
+                        }
+                    }
+                }
+
+        stage('Check Server Health') {
+                    when {
+                          branch 'main'
+                          }
+                    steps {
+                        script {
+                            def response = sh(script: 'curl -I -s -o /dev/null -w "%{http_code}" https://educa.theomnia.ru/api/actuator/health', returnStdout: true).trim()
+
+                            if (response == '200') {
+                                echo 'Server is healthy! 🟢'
+                            } else {
+                                error 'Server is not healthy! 🔴'
+                            }
+                        }
+                    }
+                }
+
+    }
+    post {
+        always {
+          cleanWs()
+        }
+      }
+}

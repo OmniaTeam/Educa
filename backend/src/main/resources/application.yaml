@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://104.248.133.133:5432/educa
+    username: educa
+    password: educa
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  jackson:
+    time-zone: Europe/Moscow
+
+assistant:
+  id: asst_jyRCtiqHDL7eVGUDygrbvJQV
+
+logging:
+  file:
+    name: ./logs/application.log
+  pattern:
+    #    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+  level:
+    org.springframework: info
+    root: error
+    com.omnia: info
+
+springdoc:
+  swagger-ui:
+    path: /swagger.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true

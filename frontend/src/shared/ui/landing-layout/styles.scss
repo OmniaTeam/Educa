@@ -1,0 +1,12 @@
+.main {
+    &--dots {
+        width: 2000px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        user-select: none;
+        will-change: transform;
+    }
+}

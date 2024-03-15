@@ -1,0 +1,23 @@
+.sidebar {
+    height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid var(--primary-black);
+    padding: 8px;
+    background-color: var(--primary-white);
+    &--heading {
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.05em;
+        border: 2px solid var(--primary-black);
+        border-radius: 8px;
+        padding: 8px;
+        text-align: center;
+        color: var(--primary-black);
+        width: calc(100% - 16px);
+        word-wrap: break-word;
+    }
+}

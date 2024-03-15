@@ -1,0 +1,13 @@
+.application {
+    padding: 8px 0;
+    height: calc(100% - 16px);
+    &--container {
+        max-width: calc(100% - 50px);
+        margin: 0 auto;
+        overflow-y: hidden;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        height: 100%;
+    }
+}

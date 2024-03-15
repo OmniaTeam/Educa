@@ -1,0 +1,23 @@
+.subjects {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--primary-white);
+    border: 2px solid var(--primary-black);
+    border-radius: 8px;
+    width: calc(100% - 32px);
+    &--title {
+        font-size: 32px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+    &--cards {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 8px
+    }
+} 

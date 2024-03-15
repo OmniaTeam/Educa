@@ -1,0 +1,1 @@
+export { ChangePassForm } from './changePassForm';

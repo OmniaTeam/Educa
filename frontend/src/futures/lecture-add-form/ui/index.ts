@@ -1,0 +1,1 @@
+export { LectureAddForm } from './lectureAddForm'

@@ -1,0 +1,21 @@
+.subject {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    width: calc(100% - 32px);
+    height: 100%;
+    overflow-y: scroll;
+    &--heading {
+        padding: 16px;
+        background-color: var(--primary-white);
+        border-radius: 8px;
+        border: 2px solid var(--primary-black);
+        width: calc(100% - 36px);
+        &__title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+    }
+}

@@ -1,0 +1,20 @@
+.form-submit {
+    width: 100%;
+    padding: 16px 0;
+    border-radius: 8px;
+    background-color: var(--primary-white);
+    border: 2px solid #000000;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--primary-black);
+    cursor: pointer;
+    background: linear-gradient(to right, var(--primary-black) 50%, var(--primary-white) 50%);
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: 375ms all;
+    &:hover {
+        color: var(--primary-white);
+        background-position: 0 100%;
+    }
+}

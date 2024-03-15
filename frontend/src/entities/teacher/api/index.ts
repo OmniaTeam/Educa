@@ -1,0 +1,1 @@
+export { teacherApi } from './teacherApi'

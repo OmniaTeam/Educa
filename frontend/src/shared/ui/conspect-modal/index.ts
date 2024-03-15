@@ -1,0 +1,1 @@
+export { ConspectModal } from './conspectModal'

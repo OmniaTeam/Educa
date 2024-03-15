@@ -1,0 +1,1 @@
+export { changePassThunk } from './changePass'

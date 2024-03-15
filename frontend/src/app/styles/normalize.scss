@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway', sans-serif;
+    background-color: var(--primary-white);
+    height: 100dvh;
+    overflow-x: hidden;
+    color: var(--primary-black);
+    font-variant-numeric: lining-nums
+}
+
+#root {
+    height: 100%;
+}
+
+main {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin-block: 0;
+    padding-block: 0;
+}
+
+a {
+    margin-block: 0;
+    padding-block: 0;
+    text-decoration: none;
+}
+
+input {
+    padding-block: 0;
+    padding-inline: 0;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
