@@ -1,9 +1,6 @@
 package com.omnia.scientia.groups.lecture;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,4 +13,15 @@ public class LectureEntity {
     private Long id;
     private String name;
     private Long subjectId;
+    @Column(columnDefinition = "TEXT")
+    private String text;
+    private boolean summary = false;
+    private boolean files = false;
+
+    public LectureEntity copy(LectureEntity obj){
+        this.name=obj.getName();
+        this.subjectId= obj.getSubjectId();
+        return this;
+    }
+
 }

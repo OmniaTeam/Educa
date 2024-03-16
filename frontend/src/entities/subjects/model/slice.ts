@@ -12,9 +12,23 @@ export const ISubjectsSlice = createSlice({
     reducers : {},
     extraReducers: (builder) => {
         builder.addMatcher(
-            subjectsApi.endpoints.getAllSubjects.matchFulfilled,
+            subjectsApi.endpoints.getAllStudentSubjects.matchFulfilled,
             (state: ISubjects, action: any) => {
                 console.log("Subjects: ", action.payload)
+                state.subjects = action.payload
+            }
+        ),
+        builder.addMatcher(
+            subjectsApi.endpoints.getAllTeacherSubjects.matchFulfilled,
+            (state: ISubjects, action: any) => {
+                console.log("Subjects: ", action.payload)
+                state.subjects = action.payload
+            }
+        ),
+        builder.addMatcher(
+            subjectsApi.endpoints.getAllFavorite.matchFulfilled,
+            (state: ISubjects, action: any) => {
+                console.log("Favorites: ", action.payload)
                 state.subjects = action.payload
             }
         )

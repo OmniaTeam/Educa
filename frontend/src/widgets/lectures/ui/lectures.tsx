@@ -2,17 +2,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LectureCard, BaseModal } from '../../../shared/index';
 import { useState } from 'react';
 import { LectureAddForm } from '../../../futures/index';
+import { ILectures, ISubject } from '../../../entities/index';
 
 import './styles.scss';
 
 interface LecturesProps {
-    lectures : {
-        lectureId : number;
-        lectureName : string;
-        lectureTeacher : string;
-        lectureSemester : number
-    }[],
-    userRole : string
+    lectures : ILectures,
+    userRole : string,
+    semester : number,
+    subject : ISubject
 }
 
 export const Lectures = (props: LecturesProps) => {
@@ -36,14 +34,15 @@ export const Lectures = (props: LecturesProps) => {
                 </div>
             }
             <div className='lectures--cards'>
-                {props.lectures.map((value, index) => 
+                {props.lectures.lectures.map((value : any, index) => 
                     <LectureCard 
                         key={index}
-                        lectureId={value.lectureId} 
-                        lectureName={value.lectureName} 
-                        lectureTeacher={value.lectureTeacher} 
-                        lectureSemester={value.lectureSemester}
-                        isTeacher={props.userRole === "Teacher" ? true : false}
+                        lectureId={value.id}
+                        lectureName={value.name}
+                        lectureTeacher={props.userRole === "Teacher" ? "" : "value.teacherFio"}
+                        lectureSemester={props.semester}
+                        isTeacher={props.userRole === "Teacher" ? true : false} 
+                        subjectName={props.subject.subjectName}
                     />
                 )}
             </div>
@@ -51,7 +50,7 @@ export const Lectures = (props: LecturesProps) => {
         <AnimatePresence>
             {addLectureModalIsOpen
                 && <BaseModal onClose={() => setAddLectureModalIsOpen(false)}>
-                    <LectureAddForm />
+                    <LectureAddForm subject={props.subject} />
                 </BaseModal>
             }
         </AnimatePresence>

@@ -1,11 +1,9 @@
 package com.omnia.scientia.groups.lecture;
 
+import com.omnia.scientia.groups.institute.InstituteEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lecture")
@@ -35,5 +33,20 @@ public class LectureController {
         return new ResponseEntity<>(subjectId, HttpStatusCode.valueOf(404));
     }
 
+    @PostMapping("/add")
+    ResponseEntity<?> add(@RequestBody LectureEntity body){
+        var saved = lectureRepository.save(body);
+        return new ResponseEntity<>(body,HttpStatusCode.valueOf(200));
+    }
+
+    @PutMapping("/edit")
+    ResponseEntity<?> edit(@RequestBody LectureEntity body){
+        var origin = lectureRepository.findById(body.getId());
+        if (origin.isPresent()) {
+            lectureRepository.save(origin.get().copy(body));
+            return new ResponseEntity<>(body.getId(), HttpStatusCode.valueOf(200));
+        }
+        return new ResponseEntity<>(null, HttpStatusCode.valueOf(404));
+    }
 
 }

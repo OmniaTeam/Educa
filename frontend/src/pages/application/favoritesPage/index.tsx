@@ -5,34 +5,10 @@ import './styles.scss';
 
 export default function FavoritesPage() {
     const subjects = useAppSelector((state) => state.subjects)
+    const lectures = useAppSelector((state) => state.lectures)
 
     return <div className="favorites">
         <FavoritesBlock type={'subjects'} subjects={subjects} fullVer={true} delay={0.1}/>
-        <FavoritesBlock type={'lectures'} lectures={[
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            },
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            },
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            },
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            }
-        ]} fullVer={true} delay={0.2}/>
+        <FavoritesBlock type={'lectures'} lectures={lectures} fullVer={true} delay={0.2}/>
     </div>
 }

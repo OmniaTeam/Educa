@@ -23,4 +23,11 @@ public class FavoritesEntity {
         this.objectId = objectId;
         this.userId = userId;
     }
+
+    public FavoritesEntity copy(FavoritesEntity obj){
+        this.objectId=obj.getObjectId();
+        this.type=obj.getType();
+        this.userId=obj.getUserId();
+        return this;
+    }
 }

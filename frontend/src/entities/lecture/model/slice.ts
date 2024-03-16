@@ -4,8 +4,7 @@ import { ILecture } from "./index";
 const initialState : ILecture = {
     lectureId: -1,
     lectureName: "Наименование лекции",
-    lectureSemester: -1,
-    lectureTeacherFio: -1
+    subjectId: -1
 }
 
 export const ILectureSlice = createSlice({

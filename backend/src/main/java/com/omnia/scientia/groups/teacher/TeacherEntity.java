@@ -15,4 +15,11 @@ public class TeacherEntity {
     private String position;
     private Long userId;
     private Long departmentId;
+
+    public TeacherEntity copy(TeacherEntity obj){
+        this.position = obj.getPosition();
+        this.departmentId = obj.getDepartmentId();
+        this.userId = obj.getUserId();
+        return this;
+    }
 }

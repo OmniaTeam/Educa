@@ -17,4 +17,13 @@ public class DepartmentEntity {
     private String director;
     private String name;
     private Long instituteId;
+
+    public DepartmentEntity copy(DepartmentEntity obj){
+        this.director = obj.getDirector();
+        this.name = obj.getName();
+        this.instituteId = obj.getInstituteId();
+        return this;
+    }
+
+
 }

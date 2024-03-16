@@ -100,7 +100,8 @@ public class JWTService {
         Cookie cookie = new Cookie(name, token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        //        cookie.setSecure(true);
+        cookie.setSecure(true);
+        cookie.setAttribute("SameSite", "Strict");
         cookie.setMaxAge((int) (exp.getTime() - new Date().getTime())/1000);
         return cookie;
     }

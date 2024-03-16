@@ -4,4 +4,11 @@ export * from './teacher/index';
 export * from './subject/index';
 export * from './subjects/index';
 export * from './lecture/index';
-export * from './lectures/index'
+export * from './lectures/index';
+export * from './institute/index';
+export * from './institutes/index';
+export * from './favorites/index';
+export * from './departmet/index';
+export * from './departments/index';
+export * from './direction/index';
+export * from './directions/index'

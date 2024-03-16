@@ -18,4 +18,12 @@ public class SubjectEntity {
     private int semester;
     private Long teacherId;
     private Long directionId;
+
+    public SubjectEntity copy(SubjectEntity obj){
+        this.name=obj.getName();
+        this.semester=obj.getSemester();
+        this.directionId=obj.directionId;
+        this.teacherId=obj.getTeacherId();
+        return this;
+    }
 }

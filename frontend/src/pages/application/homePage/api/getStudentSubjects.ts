@@ -6,7 +6,7 @@ export const getStudentSubjects = createAsyncThunk<void, any, { state: RootState
     'student/getsubjects',
     async (body, { dispatch }) => {
         try {
-            await dispatch(subjectsApi.endpoints.getAllSubjects.initiate(body)).unwrap()
+            await dispatch(subjectsApi.endpoints.getAllStudentSubjects.initiate(body)).unwrap()
         } catch (error) {
             throw new Error('Unknown error')
         }

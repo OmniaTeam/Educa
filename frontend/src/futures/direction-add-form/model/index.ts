@@ -1,0 +1,1 @@
+export { addDirection } from './addDirection'

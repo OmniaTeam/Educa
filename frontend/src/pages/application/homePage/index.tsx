@@ -1,46 +1,46 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../shared/index";
-import { getStudentInfo, getStudentSubjects } from "./api/index";
+import { getStudentInfo, getStudentSubjects, getTeacherInfo, getTeacherSubjects } from "./api/index";
 
 import AdminHomePage from "./adminHomePage/index";
 import StudentHomePage from "./studentHomePage/index";
 import TeacherHomePage from "./teacherHomePage/index";
 
 export default function HomePage() {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const user = useAppSelector((state) => state.user)
-    const student = useAppSelector((state) => state.student)
-    const teacher = useAppSelector((state) => state.teacher)
-    const subjects = useAppSelector((state) => state.subjects)
+    const { user, student, teacher, subjects, lectures } = useAppSelector((state) => state);
 
     useEffect(() => {
         if (user.userRole === "Student") {
             dispatch(getStudentInfo({})).unwrap()
-            .catch((error : Error) => {
-                console.log('message', error.message)
-            })
-        }
-    }, [user])
-
-    useEffect(() => {
-        if (user.userRole === "Student") {
+                .catch((error: Error) => {
+                    console.log('message', error.message);
+                });
             dispatch(getStudentSubjects(student.studentId)).unwrap()
-            .catch((error : Error) => {
-                console.log('message', error.message)
-            })
+                .catch((error: Error) => {
+                    console.log('message', error.message);
+                });
+        } else if (user.userRole === "Teacher") {
+            dispatch(getTeacherInfo({})).unwrap()
+                .catch((error: Error) => {
+                    console.log('message', error.message);
+                });
+            dispatch(getTeacherSubjects(teacher.teacherId)).unwrap()
+                .catch((error: Error) => {
+                    console.log('message', error.message);
+                });
         }
-    }, [student.studentId])
+    }, [user, student.studentId, teacher.teacherId]);
 
     switch (user.userRole) {
-        case ("Admin"): {
-            return <AdminHomePage user={user} />
-        }
-        case ("Student"): {
-            return <StudentHomePage user={user} student={student} subjects={subjects} />
-        }
-        case ("Teacher"): {
-            return <TeacherHomePage user={user} teacher={teacher} />
-        }
+        case "Admin":
+            return <AdminHomePage user={user} />;
+        case "Student":
+            return <StudentHomePage user={user} student={student} subjects={subjects} lectures={lectures} />;
+        case "Teacher":
+            return <TeacherHomePage user={user} teacher={teacher} />;
+        default:
+            return null;
     }
 }

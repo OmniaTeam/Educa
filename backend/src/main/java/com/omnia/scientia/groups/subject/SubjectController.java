@@ -1,11 +1,9 @@
 package com.omnia.scientia.groups.subject;
 
+import com.omnia.scientia.groups.student.StudentEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/subject")
@@ -42,5 +40,21 @@ public class SubjectController {
             return new ResponseEntity<>(response, HttpStatusCode.valueOf(200));
         }
         return new ResponseEntity<>(teacherId, HttpStatusCode.valueOf(404));
+    }
+
+    @PostMapping("/add")
+    ResponseEntity<?> add(@RequestBody SubjectEntity body){
+        var saved = subjectRepository.save(body);
+        return new ResponseEntity<>(body,HttpStatusCode.valueOf(200));
+    }
+
+    @PutMapping("/edit")
+    ResponseEntity<?> edit(@RequestBody SubjectEntity body){
+        var origin = subjectRepository.findById(body.getId());
+        if (origin.isPresent()) {
+            subjectRepository.save(origin.get().copy(body));
+            return new ResponseEntity<>(body.getId(), HttpStatusCode.valueOf(200));
+        }
+        return new ResponseEntity<>(null, HttpStatusCode.valueOf(404));
     }
 }

@@ -1,5 +1,6 @@
 package com.omnia.scientia.groups.student;
 
+import com.omnia.scientia.auth.entites.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,4 +17,10 @@ public class StudentEntity {
     private Long userId;
     private Long directionId;
 
+    public StudentEntity copy(StudentEntity obj){
+        this.directionId = obj.getDirectionId();
+        this.semesterNumber=obj.getSemesterNumber();
+        this.userId=obj.getUserId();
+        return this;
+    }
 }

@@ -20,4 +20,9 @@
         background-color: var(--primary-white);
         padding: 16px;
     }
+    &--details {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

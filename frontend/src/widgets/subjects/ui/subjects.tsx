@@ -22,7 +22,7 @@ export const Subjects = (props: SubjectsProps) => {
                     key={index}
                     subjectId={value.id} 
                     subjectName={value.name} 
-                    subjectTeacher={"ФИО Препода"} 
+                    subjectTeacher={value.teacherFio} 
                     subjectSemester={value.semester}
                     isTeacher={props.isTeacher}
                     subjectInstitute={"Наименование института"}

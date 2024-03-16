@@ -1,0 +1,1 @@
+export { InstituteAddForm } from './instituteAddForm'

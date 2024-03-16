@@ -1,12 +1,10 @@
 package com.omnia.scientia.groups.direction;
 
+import com.omnia.scientia.groups.department.DepartmentEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/direction")
@@ -35,6 +33,22 @@ public class DirectionController {
             return new ResponseEntity<>(response, HttpStatusCode.valueOf(200));
         }
         return new ResponseEntity<>(departmentId, HttpStatusCode.valueOf(404));
+    }
+
+    @PostMapping("/add")
+    ResponseEntity<?> add(@RequestBody DirectionEntity body){
+        var saved = directionRepository.save(body);
+        return new ResponseEntity<>(body,HttpStatusCode.valueOf(200));
+    }
+
+    @PutMapping("/edit")
+    ResponseEntity<?> edit(@RequestBody DirectionEntity body){
+        var origin = directionRepository.findById(body.getId());
+        if (origin.isPresent()) {
+            directionRepository.save(origin.get().copy(body));
+            return new ResponseEntity<>(body.getId(), HttpStatusCode.valueOf(200));
+        }
+        return new ResponseEntity<>(null, HttpStatusCode.valueOf(404));
     }
 
 }

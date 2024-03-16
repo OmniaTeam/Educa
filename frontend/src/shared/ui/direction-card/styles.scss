@@ -1,0 +1,17 @@
+.direction-card {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    color: var(--primary-black);
+    border: 2px solid var(--primary-black);
+    border-radius: 8px;
+    padding: 8px;
+    background: linear-gradient(to right, var(--primary-black) 50%, var(--primary-white) 50%);
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: background-position 275ms ease;
+    &:hover {
+        color: var(--primary-white);
+        background-position: 0 100%;
+    }
+}

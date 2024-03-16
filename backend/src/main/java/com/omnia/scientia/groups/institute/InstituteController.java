@@ -1,11 +1,9 @@
 package com.omnia.scientia.groups.institute;
 
+import com.omnia.scientia.groups.department.DepartmentEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/institute")
@@ -30,6 +28,22 @@ public class InstituteController {
     ResponseEntity<?> getAll(){
         var response =  instituteRepository.findAll();
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/add")
+    ResponseEntity<?> add(@RequestBody InstituteEntity body){
+        var saved = instituteRepository.save(body);
+        return new ResponseEntity<>(body,HttpStatusCode.valueOf(200));
+    }
+
+    @PutMapping("/edit")
+    ResponseEntity<?> edit(@RequestBody InstituteEntity body){
+        var origin = instituteRepository.findById(body.getId());
+        if (origin.isPresent()) {
+            instituteRepository.save(origin.get().copy(body));
+            return new ResponseEntity<>(body.getId(), HttpStatusCode.valueOf(200));
+        }
+        return new ResponseEntity<>(null, HttpStatusCode.valueOf(404));
     }
 
 

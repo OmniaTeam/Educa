@@ -3,9 +3,9 @@ import { ILectures } from "../model/index";
 
 export const lecturesApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-		getAllLectures : build.query<ILectures, any>({
-			query : () => ({
-				url : `/lectures/`,
+		getAllLectures : build.query<ILectures, number>({
+			query : ( subjectId ) => ({
+				url : `/lecture/get/subject/${subjectId}`,
 				headers : {
 					"Content-Type": "application/json",
 				},

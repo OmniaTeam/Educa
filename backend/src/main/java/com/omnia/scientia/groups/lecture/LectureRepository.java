@@ -9,4 +9,8 @@ import java.util.List;
 public interface LectureRepository extends JpaRepository<LectureEntity, Long> {
 
     List<LectureEntity> findAllBySubjectId(Long subjectId);
+
+    List<LectureEntity> findAllBySummaryFalse();
+
+    List<LectureEntity> findAllByFilesTrueAndSubjectId(Long subjectId);
 }

@@ -1,8 +1,8 @@
 package com.omnia.scientia.groups.student;
 
 import com.omnia.scientia.dto.StudentInfoResponse;
+import com.omnia.scientia.dto.StudentSubjectResponse;
 import com.omnia.scientia.exceptions.NotFoundException;
-import com.omnia.scientia.groups.subject.SubjectEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class StudentService {
         return studentRepository.findStudentInfoByUserId(userId);
     }
 
-    public List<SubjectEntity> getStudentSubjects(Long id) {
+    public List<StudentSubjectResponse> getStudentSubjects(Long id) {
         return studentRepository.findAllStudentSubjectsByStudentId(id);
     }
 }

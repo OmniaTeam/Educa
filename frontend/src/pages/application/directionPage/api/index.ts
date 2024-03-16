@@ -1,0 +1,1 @@
+export { getDirection } from './getDirection'

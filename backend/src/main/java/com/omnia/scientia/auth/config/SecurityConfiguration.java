@@ -45,6 +45,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/user").authenticated()
                         .requestMatchers("/admin/**").hasAuthority(ERole.Admin.name())
                         .requestMatchers("/favorites/**").authenticated()
+                        .requestMatchers("/students/**").authenticated()
+                        .requestMatchers("/teachers/**").authenticated()
 
 //                        .requestMatchers("/user").hasAuthority(Role.USER.name())
                         // TODO: make settings

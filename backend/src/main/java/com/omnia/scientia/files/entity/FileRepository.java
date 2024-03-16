@@ -10,4 +10,6 @@ public interface FileRepository extends JpaRepository<FileEntity, Long> {
 
     List<FileEntity> findAllByLectureId(Long lectureId);
 
+    List<FileEntity> findAllByProcessedFalse();
+
 }

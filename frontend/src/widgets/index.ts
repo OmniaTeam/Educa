@@ -3,4 +3,9 @@ export * from './sidebar-footer/index';
 export * from './sidebar-navigation/index';
 export * from './subjects/index';
 export * from './lectures/index';
-export * from './favorites-block/index'
+export * from './favorites-block/index';
+export * from './institutes/index';
+export * from './departments/index';
+export * from './directions-block/index';
+export * from './department-block/index';
+export * from './direction-block/index'

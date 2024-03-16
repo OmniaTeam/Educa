@@ -1,0 +1,1 @@
+export { getDepartment } from './getDepartment'

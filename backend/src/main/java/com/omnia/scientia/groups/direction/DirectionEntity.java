@@ -16,4 +16,10 @@ public class DirectionEntity {
     private Long id;
     private String name;
     private Long departmentId;
+
+    public DirectionEntity copy(DirectionEntity obj){
+        this.departmentId= obj.getDepartmentId();
+        this.name=obj.getName();
+        return this;
+    }
 }

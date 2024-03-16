@@ -10,4 +10,8 @@ export * from './welcome-card/index';
 export * from './subject-card/index';
 export * from './lecture-card/index';
 export * from './base-modal/index';
-export * from './conspect-modal/index'
+export * from './conspect-modal/index';
+export * from './institute-card/index';
+export * from './department-card/index';
+export * from './complete/index';
+export * from './direction-card/index'

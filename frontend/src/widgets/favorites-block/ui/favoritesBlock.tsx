@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
 import { LectureCard, SubjectCard } from '../../../shared/index';
+import { motion } from 'framer-motion';
+import { ILectures, ISubjects } from '../../../entities/index';
 
 import './styles.scss';
-import { motion } from 'framer-motion';
-import { ISubjects } from '../../../entities/index';
 
 interface FavoriteSubjectsProps {
     type : string;
     subjects? : ISubjects;
-    lectures? : {
-        lectureId : number;
-        lectureName : string;
-        lectureTeacher : string;
-        lectureSemester : number
-    }[],
+    lectures? : ILectures,
     fullVer? : boolean,
     delay? : number
 }
@@ -33,18 +28,19 @@ export const FavoritesBlock = (props: FavoriteSubjectsProps) => {
                         key={index}
                         subjectId={value.id} 
                         subjectName={value.name} 
-                        subjectTeacher={"ФИО препода"} 
+                        subjectTeacher={value.teacherFio} 
                         subjectSemester={value.semester} 
                         fullwidth={props.fullVer ? false : true}
                     />
                 )}{}</>
-                : <>{props.lectures?.slice(0, props.fullVer ? props.lectures.length : 2).map((value, index) => 
+                : <>{props.lectures?.lectures.slice(0, props.fullVer ? props.lectures.lectures.length : 2).map((value : any, index) => 
                     <LectureCard 
-                        key={index} 
-                        lectureId={value.lectureId} 
-                        lectureName={value.lectureName} 
-                        lectureTeacher={value.lectureTeacher} 
-                        lectureSemester={value.lectureSemester}
+                        key={index}
+                        lectureId={value.id}
+                        lectureName={value.name}
+                        lectureTeacher={value.teacherFio}
+                        lectureSemester={value.lectureSemester} 
+                        subjectName={'Наименование предмета'}
                     />
                 )}{}</>
             }

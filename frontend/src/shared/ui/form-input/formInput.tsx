@@ -23,7 +23,8 @@ interface FormInputProps {
         }
     },
     onChangeHandle : (e : ChangeEvent<HTMLInputElement>) => void; 
-    errorHandle?: boolean
+    errorHandle?: boolean;
+    inputValue?: string
 }
 
 export const FormInput = (props : FormInputProps) => {
@@ -69,6 +70,7 @@ export const FormInput = (props : FormInputProps) => {
             type={props.inputType}
             placeholder=""
             onChange={props.onChangeHandle}
+            value={props.inputValue}
         />
         <motion.label animate={controls}>{props.labelName}</motion.label>
     </motion.div>

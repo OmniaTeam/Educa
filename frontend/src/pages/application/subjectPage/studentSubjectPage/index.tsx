@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
 import { Lectures } from '../../../../widgets/index';
+import { ILectures, ISubject } from '../../../../entities/index';
 
 import './styles.scss';
-import { ISubject } from '../../../../entities/index';
 
 interface StudentSubjectPageProps {
     subject : ISubject;
+    lectures : ILectures;
     userRole : string
 }
 
@@ -18,31 +19,6 @@ export const StudentSubjectPage = (props: StudentSubjectPageProps) => {
         className='subject--heading'>
             <h2 className='subject--heading__title'>{props.subject.subjectName}</h2>
         </motion.div>
-        <Lectures lectures={[
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            },
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            },
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            },
-            {
-                lectureId : 0,
-                lectureName : "Наименование предмета",
-                lectureTeacher : "ФИО Препода",
-                lectureSemester : 7
-            }
-        ]} userRole={props.userRole}/>
+        <Lectures lectures={props.lectures} userRole={props.userRole} semester={props.subject.subjectSemester} subject={props.subject}/>
     </div>
 }
