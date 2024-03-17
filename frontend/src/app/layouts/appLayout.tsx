@@ -1,28 +1,17 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../shared/index";
+import { Outlet } from "react-router-dom";
 import { Sidebar } from "../../futures/index";
-import { useEffect } from "react";
+import { getUserInfo } from "../../entities/user/model/selectors";
 
 import './styles.scss';
 
-import dots from '../../assets/dots.svg';
-
 export default function AppLayout() {
-    const navigator = useNavigate()
-    const user = useAppSelector((state) => state.user)
-
-    useEffect(() => {
-        if (user.userRole === "Guest") {
-            navigator('/auth')
-        }
-    }, [user.userRole])
+    const user = getUserInfo()
 
     return <main>
-        <img className="main--dots" src={dots} alt="" />
+        <Sidebar user={user}/>
         <section className="application">
             <div className="application--container">
-                <Sidebar user={user}/>
-                <Outlet />
+                <Outlet/>
             </div>
         </section>
     </main>
