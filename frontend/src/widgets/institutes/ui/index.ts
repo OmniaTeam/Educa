@@ -1,1 +1,0 @@
-export { Institutes } from './institutes'

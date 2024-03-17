@@ -1,18 +1,21 @@
 .sidebar {
-    height: calc(100% - 20px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border-radius: 8px;
-    border: 2px solid var(--primary-black);
+    border-radius: 0 8px 8px 0;
     padding: 8px;
+    width: calc(160px - 16px);
     background-color: var(--primary-white);
     &--heading {
         font-weight: 700;
         font-size: 16px;
         letter-spacing: 0.05em;
-        border: 2px solid var(--primary-black);
+        border: 2px solid var(--secondary-white);
         border-radius: 8px;
         padding: 8px;
         text-align: center;

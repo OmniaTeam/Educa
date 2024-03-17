@@ -1,1 +1,0 @@
-export { getDirection } from './getDirection'

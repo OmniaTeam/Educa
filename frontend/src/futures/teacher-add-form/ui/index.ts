@@ -1,1 +1,0 @@
-export { TeacherAddForm } from './teacherAddForm'

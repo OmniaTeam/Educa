@@ -50,7 +50,7 @@ public class RequesterGPTService {
         try {
             FileUploadResponse file = sendFile(filePath);
             log.info("file {}", file);
-            Thread.sleep(2000);
+            Thread.sleep(60000);
             ThreadRun thread = createAndRunThreadFile(assistantFileId, "Сделай полный конспект из файла согласно твоим инструкциям, язык разметки markdown",file.getId());
             if (checkStatusRun(thread.getThreadId(), thread.getId()) == null) {
                 log.error("too long to process message");
@@ -73,7 +73,7 @@ public class RequesterGPTService {
             log.info(entity.getName());
             String filePath = createTemp(entity);
             FileUploadResponse file = sendFile(filePath);
-            Thread.sleep(5000);
+            Thread.sleep(60000);
             ThreadRun thread = createAndRunThreadFile(assistantSummaryId,"Сделай краткий конспект согласно твоим инструкциям, язык разметки markdown", file.getId());
             if (checkStatusRun(thread.getThreadId(), thread.getId()) == null) {
                 log.error("too long to process message");
@@ -95,6 +95,7 @@ public class RequesterGPTService {
         try {
             String filePath = createTemp(lecture);
             FileUploadResponse file = sendFile(filePath);
+            Thread.sleep(10000);
             String req = String.format("На основе лекции из файла ответь на вопрос %s", question);
             ThreadRun thread = createAndRunThreadFile(assistantAnswerId, req, file.getId());
             if (checkStatusRun(thread.getThreadId(), thread.getId()) == null) {

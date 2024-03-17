@@ -1,20 +1,4 @@
-export * from './landing-layout/index';
-export * from './preload-text/index';
-export * from './preload-lines/index';
-export * from './auth-header/index';
-export * from './form-input/index';
-export * from './form-submit/index';
-export * from './sidebar-button/index';
-export * from './sidebar-link/index';
-export * from './welcome-card/index';
-export * from './subject-card/index';
-export * from './lecture-card/index';
-export * from './base-modal/index';
-export * from './conspect-modal/index';
-export * from './institute-card/index';
-export * from './department-card/index';
-export * from './complete/index';
-export * from './direction-card/index';
-export * from './student-card/index';
-export * from './teacher-subject-card/index';
-export * from './moderate-user-card/index'
+export { FormInput } from './form-input/index';
+export { FormSubmit } from './form-submit/index';
+export { SidebarButton } from './sidebar-button/index';
+export { SidebarLink } from './sidebar-link/index'

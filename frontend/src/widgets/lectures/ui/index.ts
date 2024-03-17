@@ -1,1 +1,0 @@
-export { Lectures } from './lectures'

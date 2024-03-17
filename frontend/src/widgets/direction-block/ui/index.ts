@@ -1,1 +1,0 @@
-export { DirectionBlock } from './directionBlock'

@@ -1,0 +1,75 @@
+.lesson-card {
+    position: relative;
+    background-color: var(--primary-white);
+    border-radius: 8px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 16px;
+    &--overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        border-radius: 8px;
+    }
+    &--heading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        &__title {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 0.05em;
+        }
+        &__questions {
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            opacity: .5;
+        }
+    }
+    &--footer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        &__results {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-white);
+            border: 2px solid var(--secondary-white);
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.05em;
+        }
+    }
+}
+
+.footer-information {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    &--status,
+    &--right {
+        padding: 8px;
+        color: var(--primary-white);
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.05em;
+    }
+}

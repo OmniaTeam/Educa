@@ -2,16 +2,13 @@
     position: relative;
     width: 100%;
     input {
-        border: 2px solid var(--primary-black);
+        border: 1px solid var(--secondary-white);
         border-radius: 8px;
         padding: 16px 0px 16px 8px;
-        width: calc(100% - 12px);
+        width: calc(100% - 8px);
         letter-spacing: 0.05em;
         font-size: 16px;
         font-weight: 700;
-    }
-    input[type='file'] {
-        
     }
     label {
         pointer-events: none;

@@ -9,6 +9,7 @@ import com.omnia.scientia.auth.repositories.UserRepository;
 import com.omnia.scientia.dto.*;
 import com.omnia.scientia.auth.entites.UserEntity;
 import com.omnia.scientia.auth.services.UserService;
+import com.omnia.scientia.exceptions.AlreadyExistException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,31 +49,7 @@ public class AuthenticationController {
         try {
             log.info("payload {}", payload);
             JsonNode jsonNode = objectMapper.readTree(payload);
-            VkSession vkSession = new VkSession();
-            vkSession.setType(jsonNode.get("type").asText());
-            vkSession.setAuth(jsonNode.get("auth").asInt());
-            vkSession.setToken(jsonNode.get("token").asText());
-            vkSession.setTtl(jsonNode.get("ttl").asInt());
-            vkSession.setUuid(jsonNode.get("uuid").asText());
-            log.info("vk {}", vkSession);
-            log.info("token {}", vkSession.getToken());
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://api.vk.com/method/auth.exchangeSilentAuthToken")
-                    .queryParam("v", "5.131")
-                    .queryParam("token", vkSession.getToken())
-                    .queryParam("access_token", "783a40cd783a40cd783a40cd0e7b2dda167783a783a40cd1dcfae67122395e186968b2c")
-                    .queryParam("uuid", "rnjvengjner");
-            HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-            String uriString = builder.toUriString();
-//            ResponseEntity<String> response = restTemplate.exchange(
-//                    uriString,
-//                    HttpMethod.POST,
-//                    httpEntity,
-//                    String.class
-//            );
 
-//            JsonNode vkAns = objectMapper.readTree(response.getBody()).get("response");
             Long userId = jsonNode.get("user").get("id").asLong();
             Optional<UserEntity> user = userRepository.findByVkId(userId);
             if (user.isEmpty()) {
@@ -112,6 +89,8 @@ public class AuthenticationController {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
         Long userId = jsonNode.get("user").get("id").asLong();
+        Optional<UserEntity> userEnt = userRepository.findByVkId(userId);
+        if (userEnt.isPresent()) throw new AlreadyExistException("user");
         user.setVkId(userId);
         userRepository.save(user);
         new DefaultRedirectStrategy().sendRedirect(request, response, "/application");

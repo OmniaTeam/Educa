@@ -1,1 +1,0 @@
-export { TeacherAddSubjectForm } from './teacherAddSubjectForm'

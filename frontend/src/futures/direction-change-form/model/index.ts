@@ -1,1 +1,0 @@
-export { changeDirection } from './changeDirection'

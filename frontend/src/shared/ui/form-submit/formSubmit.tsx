@@ -20,14 +20,12 @@ interface FormSubmitProps {
             duration?: number,
             delay?: number
         }
-    },
-    clickHandle? : () => void
+    }
 }
 
 export const FormSubmit = (props : FormSubmitProps) => {
     return <motion.input
         className="form-submit"
-        onClick={props.clickHandle}
         type={props.inputType}
         value={props.inputValue}
         initial={{ opacity: props.animation.initial.opacity }}

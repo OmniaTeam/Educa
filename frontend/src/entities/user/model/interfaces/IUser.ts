@@ -1,8 +1,12 @@
-import { EUserRoles } from "../enums/index";
+import { EUserGenders, EUserRoles } from "../enums/index";
 
 export interface IUser {
     userId : number,
-    userFio : string,
-    userLogin : string,
+    userName : string,
+    userSurName : string,
+    userLastName : string,
+    userEmail : string,
+    userBirthday : string,
+    userGender : EUserGenders;
     userRole : EUserRoles
 }

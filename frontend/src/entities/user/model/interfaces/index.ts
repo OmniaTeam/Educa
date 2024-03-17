@@ -1,2 +1,2 @@
 export * from './IUser';
-export * from './ILoginRequest';
+export * from './ILoginRequest'

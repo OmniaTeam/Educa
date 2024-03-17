@@ -1,0 +1,16 @@
+.home {
+    &--heading {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        &__title {
+            padding: 16px;
+            border-radius: 8px;
+            background-color: var(--primary-white);
+            font-size: 32px;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
+        }
+    }
+}

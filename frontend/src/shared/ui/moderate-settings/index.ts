@@ -1,1 +1,0 @@
-export { ModerationSettings } from './moderateSettings'

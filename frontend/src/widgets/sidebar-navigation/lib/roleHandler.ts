@@ -2,43 +2,47 @@ import { EUserRoles } from "../../../entities/index";
 
 export const RoleHandler = (role : EUserRoles) => {
     switch (role) {
-        case EUserRoles.ADMIN: {
+        case EUserRoles.admin: {
             return [
                 {
                     linkPath : '',
                     linkValue : 'Главная'
                 },
                 {
-                    linkPath : 'institutes',
-                    linkValue : 'Институты'
+                    linkPath : '',
+                    linkValue : 'Пользователи'
+                },
+                {
+                    linkPath : '',
+                    linkValue : 'Группы'
                 }
             ]
         }
-        case EUserRoles.TEACHER: {
+        case EUserRoles.teacher: {
             return [
                 {
                     linkPath : '',
                     linkValue : 'Главная'
                 },
                 {
-                    linkPath : 'subjects',
-                    linkValue : 'Предметы'
+                    linkPath : '',
+                    linkValue : 'Группы'
                 }
             ]
         }
-        case EUserRoles.STUDENT: {
+        case EUserRoles.student: {
             return [
                 {
                     linkPath : '',
                     linkValue : 'Главная'
                 },
                 {
-                    linkPath : 'subjects',
-                    linkValue : 'Предметы'
+                    linkPath : 'lessons',
+                    linkValue : 'Обучение'
                 },
                 {
-                    linkPath : 'favorites',
-                    linkValue : 'Избранное'
+                    linkPath : '',
+                    linkValue : 'Статистика'
                 }
             ]
         }
@@ -49,12 +53,12 @@ export const RoleHandler = (role : EUserRoles) => {
                     linkValue : 'Главная'
                 },
                 {
-                    linkPath : 'subjects',
-                    linkValue : 'Предметы'
+                    linkPath : 'lessons',
+                    linkValue : 'Обучение'
                 },
                 {
                     linkPath : '',
-                    linkValue : 'Избранное'
+                    linkValue : 'Статистика'
                 }
             ]
         }

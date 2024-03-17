@@ -1,1 +1,0 @@
-export { ModerateUserCard } from './moderateUserCard'

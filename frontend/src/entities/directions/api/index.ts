@@ -1,1 +1,0 @@
-export { directionsApi } from './directionsApi'

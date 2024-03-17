@@ -1,1 +1,0 @@
-export { getDirectionStudents } from './getDirectionStudents'

@@ -1,1 +1,0 @@
-export { addInstitute } from './addInstitue'

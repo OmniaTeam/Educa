@@ -1,15 +1,17 @@
-import { AuthForm } from "../../futures/index";
-import { AuthHeader, LandingLayout } from "../../shared/index";
+import { motion } from 'framer-motion';
+import { Form } from '../../futures/index';
 
-import './styles.scss';
+import "./styles.scss"
 
 export default function AuthPage() {
-    return <LandingLayout>
-        <AuthHeader />
-        <section className="auth">
-            <div className="auth--container">
-                <AuthForm />
-            </div>
-        </section>
-    </LandingLayout>
+    return <main>
+        <motion.section
+            className="auth"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+        >
+            <Form/>
+        </motion.section>
+    </main>
 }

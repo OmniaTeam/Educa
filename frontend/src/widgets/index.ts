@@ -1,16 +1,3 @@
-export * from './preload/index';
-export * from './sidebar-footer/index';
-export * from './sidebar-navigation/index';
-export * from './subjects/index';
-export * from './lectures/index';
-export * from './favorites-block/index';
-export * from './institutes/index';
-export * from './departments/index';
-export * from './directions-block/index';
-export * from './department-block/index';
-export * from './direction-block/index';
-export * from './students-block/index';
-export * from './teacher-subjects/index';
-export * from './teacher-card/index'
-export * from './teachers/index';
-export * from './moderation-block/index'
+export { SidebarNavigation } from './sidebar-navigation/index';
+export { SidebarFooter } from './sidebar-footer/index';
+export { Lessons } from './lessons/index'

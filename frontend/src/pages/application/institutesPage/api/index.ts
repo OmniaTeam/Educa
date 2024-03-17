@@ -1,1 +1,0 @@
-export { getInstitutes } from './getInstitutes'

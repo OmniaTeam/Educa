@@ -1,1 +1,0 @@
-export { departmentsApi } from './departmentsApi'

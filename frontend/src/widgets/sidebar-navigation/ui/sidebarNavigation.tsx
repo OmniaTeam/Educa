@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { SidebarLink } from '../../../shared/index';
+import { SidebarLink } from '../../../shared/ui/sidebar-link/index';
 import { EUserRoles } from '../../../entities/index';
 import { RoleHandler } from '../lib/roleHandler';
 

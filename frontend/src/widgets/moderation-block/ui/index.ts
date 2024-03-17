@@ -1,1 +1,0 @@
-export { ModerationBlock } from './moderationBlock'

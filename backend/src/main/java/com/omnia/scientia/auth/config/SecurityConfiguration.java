@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/user/add/vk").authenticated()
                         .requestMatchers("/admin/**").hasAuthority(ERole.Admin.name())
                         .requestMatchers("/favorites/**").authenticated()
                         .requestMatchers("/students/**").authenticated()

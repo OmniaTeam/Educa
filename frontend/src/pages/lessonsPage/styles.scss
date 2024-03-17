@@ -1,0 +1,24 @@
+.lessons {
+    &--attestations {
+        &__title {
+            font-weight: 700;
+            font-size: 32px;
+            letter-spacing: 0.08em;
+            background-color: var(--primary-white);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
+        }
+    }
+    &--exams {
+        &__title {
+            font-weight: 700;
+            font-size: 32px;
+            letter-spacing: 0.08em;
+            background-color: var(--primary-white);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
+        }
+    }
+}

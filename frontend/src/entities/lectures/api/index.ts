@@ -1,1 +1,0 @@
-export { lecturesApi } from './lecturesApi'

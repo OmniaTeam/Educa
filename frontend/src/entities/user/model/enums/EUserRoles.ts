@@ -1,6 +1,6 @@
 export enum EUserRoles {
-    STUDENT = "Student",
-    TEACHER = "Teacher",
-    ADMIN = "Admin",
-    GUEST = "Guest"
+    student,
+    teacher,
+    admin,
+    nothing
 }

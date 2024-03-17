@@ -1,1 +1,0 @@
-export { getSubject } from './getSubject'

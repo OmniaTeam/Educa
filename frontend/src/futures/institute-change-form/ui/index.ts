@@ -1,1 +1,0 @@
-export { InstituteChangeForm } from './instituteChangeForm'

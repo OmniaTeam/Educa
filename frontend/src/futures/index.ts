@@ -1,13 +1,2 @@
-export * from './auth-form/index';
-export * from './sidebar/index';
-export * from './change-pass-form/index';
-export * from './lecture-add-form/index';
-export * from './institute-add-form/index';
-export * from './institute-change-form/index';
-export * from './department-add-form/index';
-export * from './department-change-form/index';
-export * from './direction-add-form/index';
-export * from './student-add-form/index';
-export * from './teacher-add-form/index';
-export * from './teacher-add-subject-form/index';
-export * from './file-upload/index'
+export { Form } from './form/index'
+export { Sidebar } from "./sidebar/index"

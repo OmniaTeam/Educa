@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
-import { SidebarButton } from "../../../shared/index";
-import { SidebarLink } from "../../../shared/index";
+import { SidebarButton } from "../../../shared/ui/index";
+import { SidebarLink } from "../../../shared/ui/index";
 
 import './styles.scss';
 
@@ -22,7 +22,6 @@ interface SidebarFooterProps {
             delay? : number
         }
     }
-    onClickHandler : () => void
 }
 
 export const SidebarFooter = (props: SidebarFooterProps) => {
@@ -32,10 +31,10 @@ export const SidebarFooter = (props: SidebarFooterProps) => {
         animate={{ opacity: props.animation.animate.opacity, x: props.animation.animate.x }}
         transition={{ duration: props.animation.transition.duration, delay: props.animation.transition.delay }}
     >
-        <SidebarLink linkPath={"settings"} linkValue={"Настройки"}/>
+        <SidebarLink linkPath={""} linkValue={"Настройки"}/>
         <SidebarButton
             buttonValue={"Выйти"}
-            onClickHandler={props.onClickHandler}
+            onClickHandler={() => {}}
         />
     </motion.div>
 }  

@@ -1,1 +1,0 @@
-export { subjectsApi } from './subjectsApi'

@@ -77,7 +77,7 @@ public class AdminController {
     ResponseEntity<?> createTeacher(@RequestBody TeacherCreate teacherCreate,@PathVariable Long userId) {
         var user = userService.getUserById(userId);
         user.setRole(ERole.Teacher);
-        userRepository.save(user);
+        userService.userRegister(user);
         TeacherEntity teacher = new TeacherEntity();
         teacher.setUserId(user.getId());
         teacher.setPosition(teacherCreate.getPosition());
@@ -89,7 +89,7 @@ public class AdminController {
     ResponseEntity<?> createStudent(@RequestBody StudentCreate studentCreate,@PathVariable Long userId) {
         var user = userService.getUserById(userId);
         user.setRole(ERole.Student);
-        userRepository.save(user);
+        userService.userRegister(user);
         StudentEntity student = new StudentEntity();
         student.setUserId(user.getId());
         student.setSemesterNumber(studentCreate.getSemesterNumber());

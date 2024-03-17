@@ -1,1 +1,0 @@
-export { FavoritesBlock } from './favoritesBlock'
