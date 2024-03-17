@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
@@ -28,4 +29,6 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
     TeacherInfoResponse findTeacherInfoByTeacherId(@Param("teacherId") Long userId);
 
     List<TeacherEntity> findAllByDepartmentId(Long departmentId);
+
+    Optional<TeacherEntity> findByUserId(Long userId);
 }

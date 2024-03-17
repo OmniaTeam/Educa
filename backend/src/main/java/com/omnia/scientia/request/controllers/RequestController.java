@@ -1,15 +1,15 @@
 package com.omnia.scientia.request.controllers;
 
+import com.omnia.scientia.dto.Question;
 import com.omnia.scientia.request.RequestMaster;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/request")
+@Slf4j
 public class RequestController {
 
     final private RequestMaster requestMaster;
@@ -20,18 +20,10 @@ public class RequestController {
 
 
     //Only for test
-    @GetMapping("/summary/fileId/{fileId}")
-    ResponseEntity<?> analyseWithoutBalance(@PathVariable Long fileId){
+    @PostMapping("/question/lecture/id/{lecture_id}")
+    ResponseEntity<?> analyseWithoutBalance(@PathVariable Long lecture_id, @RequestBody Question question){
 
-        var status = requestMaster.generateTextWithFile(fileId);
-        if (status == 200){
-            return new ResponseEntity<>(fileId,HttpStatusCode.valueOf(200));
-        }
-        if (status == 403){
-            return new ResponseEntity<>(fileId,HttpStatusCode.valueOf(403));
-        }
-
-        return new ResponseEntity<>(fileId, HttpStatusCode.valueOf(404));
+        return ResponseEntity.ok().body(requestMaster.questionLecture(lecture_id, question.getQuestion()));
     }
 
 

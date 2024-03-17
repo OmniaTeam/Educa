@@ -101,5 +101,19 @@ export const AuthForm = () => {
             }
         }}
         />
+        <FormSubmit inputType={'submit'} inputValue={'Войти по VKID'} animation={{
+            initial: {
+                opacity: 0
+            },
+            animate: {
+                opacity: 1
+            },
+            transition: {
+                duration: 0.5,
+                delay: 0.5
+            }
+        }}
+        clickHandle={() => window.location.href = "https://id.vk.com/auth?uuid=rnjvengjner&app_id=51878619&redirect_uri=https://educa.theomnia.ru/api/user/vk&redirect_state=state&response_type=silent_token"}
+        />
     </motion.form>
 }

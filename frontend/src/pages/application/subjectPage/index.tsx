@@ -13,7 +13,6 @@ export default function SubjectPage() {
     const { id } = useParams()
 
     const subject = useAppSelector((state) => state.subject)
-    const lectures = useAppSelector((state) => state.lectures)
     const user = useAppSelector((state) => state.user)
 
     useEffect(() => {
@@ -21,21 +20,21 @@ export default function SubjectPage() {
             .catch((error : Error) => {
                 console.log('message', error.message)
             })
-    }, [subject])
+    }, [subject.subjectId])
 
     useEffect(() => {
         dispatch(getSubjectLectures(id)).unwrap()
             .catch((error : Error) => {
                 console.log('message', error.message)
             })
-    }, [lectures])
+    }, [id])
     
     switch (user.userRole) {
         case ("Student"): {
-            return <StudentSubjectPage userRole={user.userRole} subject={subject} lectures={lectures} />
+            return <StudentSubjectPage userRole={user.userRole} subjectId={Number(id)} />
         }
         case ("Teacher"): {
-            return <TeacherSubjectPage userRole={user.userRole} subject={subject}/>
+            return <TeacherSubjectPage userRole={user.userRole} subjectId={Number(id)}/>
         }
         case ("Admin"): {
             navigator('/application')

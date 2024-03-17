@@ -9,7 +9,7 @@ import TeacherHomePage from "./teacherHomePage/index";
 export default function HomePage() {
     const dispatch = useAppDispatch();
 
-    const { user, student, teacher, subjects, lectures } = useAppSelector((state) => state);
+    const { user, student, teacher } = useAppSelector((state) => state);
 
     useEffect(() => {
         if (user.userRole === "Student") {
@@ -33,11 +33,12 @@ export default function HomePage() {
         }
     }, [user, student.studentId, teacher.teacherId]);
 
+
     switch (user.userRole) {
         case "Admin":
             return <AdminHomePage user={user} />;
         case "Student":
-            return <StudentHomePage user={user} student={student} subjects={subjects} lectures={lectures} />;
+            return <StudentHomePage user={user} student={student} />;
         case "Teacher":
             return <TeacherHomePage user={user} teacher={teacher} />;
         default:

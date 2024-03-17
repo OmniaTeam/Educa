@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { BaseModal } from "../index";
+import { InstituteChangeForm } from "../../../futures/index";
 
 import './styles.scss';
-import { InstituteChangeForm } from "../../../futures/index";
 
 interface InstituteCardProps {
     instituteId : number,

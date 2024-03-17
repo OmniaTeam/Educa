@@ -17,9 +17,6 @@ export default function InstitutesPage() {
         }
         else {
             dispatch(getInstitutes({})).unwrap()
-            .catch((error : Error) => {
-                console.log('message', error.message)
-            })
         }
     }, [user.userRole, institutes])
 

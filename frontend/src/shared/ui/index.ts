@@ -14,4 +14,7 @@ export * from './conspect-modal/index';
 export * from './institute-card/index';
 export * from './department-card/index';
 export * from './complete/index';
-export * from './direction-card/index'
+export * from './direction-card/index';
+export * from './student-card/index';
+export * from './teacher-subject-card/index';
+export * from './moderate-user-card/index'

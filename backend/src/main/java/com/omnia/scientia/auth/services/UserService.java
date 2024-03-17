@@ -31,7 +31,7 @@ public class UserService {
         return userRepository.findByLogin(login).orElseThrow(() -> new NotFoundException("User"));
     }
 
-    public UserEntity userRegister(UserCreate userCreate) {
+    public UserEntity userRegister(UserEntity userCreate) {
         Optional<UserEntity> userDB = userRepository.findByLogin(userCreate.getLogin());
         if (userDB.isPresent()) {
 
@@ -44,9 +44,8 @@ public class UserService {
 
         }
         userCreate.setPassword(passwordEncoder.encode(userCreate.getPassword()));
-        UserEntity user = new UserEntity(userCreate);
-        userRepository.save(user);
-        return user;
+        userRepository.save(userCreate);
+        return userCreate;
     }
 
     public void saveUser(UserEntity user) {

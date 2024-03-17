@@ -12,10 +12,32 @@ export const studentApi = baseApi.injectEndpoints({
 				method : "GET",
 				redirect : "follow"
 			})
+		}),
+		getDirectionStudents : build.query<IStudent, number>({
+			query : ( directionId ) => ({
+				url : `/students/get/direction/${directionId}`,
+				headers : {
+					"Content-Type": "application/json",
+				},
+				method : "GET",
+				redirect : "follow"
+			})
+		}),
+		getStudentInfoById : build.query<IStudent, number>({
+			query : ( studentId ) => ({
+				url : `students/get/info/id/${studentId}`,
+				headers : {
+					"Content-Type": "application/json",
+				},
+				method : "GET",
+				redirect : "follow"
+			})
 		})
     }),
 });
 
 export const {
-    useGetStudentInfoQuery
+    useGetStudentInfoQuery,
+	useGetDirectionStudentsQuery,
+	useGetStudentInfoByIdQuery
 } = studentApi;

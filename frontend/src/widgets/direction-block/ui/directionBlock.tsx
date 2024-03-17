@@ -1,17 +1,27 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { BaseModal } from "../../../shared/index";
-import { IDirection } from "../../../entities/index";
+import { useEffect, useState } from "react";
+import { BaseModal, useAppDispatch, useAppSelector } from "../../../shared/index";
 
 import './styles.scss';
+import { StudentsBlock } from "../../index";
+import { getDirection } from "../../../pages/application/directionPage/api/index";
+import { DirectionChangeForm } from "../../../futures/direction-change-form/index";
 
 interface DirectionBlockProps {
-    direction : IDirection
+    directionId : number,
 }
 
 export const DirectionBlock = (props: DirectionBlockProps) => {
+    const dispatch = useAppDispatch()
+
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
+
+    const direction = useAppSelector((state) => state.direction)
+
+    useEffect(() => {
+        dispatch(getDirection(props.directionId)).unwrap()
+    }, [direction])
 
     return <>
         <motion.div 
@@ -20,7 +30,7 @@ export const DirectionBlock = (props: DirectionBlockProps) => {
             transition={{ duration: 0.3, delay: 0.2 }}
             className="direction-block">
             <div className="direction-block--heading">
-                <h2 className="direction-block--heading__title">{props.direction.directionName}</h2>
+                <h2 className="direction-block--heading__title">{direction.directionName}</h2>
                 <div className="direction-block--actions">
                     <div className="direction-block--actions__edit" onClick={() => setIsEditModalOpen(true)}>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,13 +44,12 @@ export const DirectionBlock = (props: DirectionBlockProps) => {
                     </div>
                 </div>
             </div>
-            {/* <DirectionsBlock directions={props.directions} department={props.department}/> */}
+            <StudentsBlock directionId={props.directionId} />
         </motion.div>
         <AnimatePresence>
             {isEditModalOpen
                 && <BaseModal onClose={() => setIsEditModalOpen(false)}>
-                    <div></div>
-                    {/* <DepartmentChangeForm departmentId={props.department.departmentId} departmentName={props.department.departmentName} departmentDirector={props.department.departmentDirector} instituteId={props.department.instituteId}/> */}
+                    <DirectionChangeForm directionId={props.directionId}/>
                 </BaseModal>
             }
         </AnimatePresence>
@@ -48,7 +57,7 @@ export const DirectionBlock = (props: DirectionBlockProps) => {
             {isDeleteModalOpen
                 && <BaseModal onClose={() => setIsDeleteModalOpen(false)}>
                     <div className="department-delete">
-                        <h3 className="department-delete--title">{props.direction.directionName}</h3>
+                        <h3 className="department-delete--title">{direction.directionName}</h3>
                         <div className="department-delete--buttons">
                             <a className="department-delete--link" href="">Удалить направление</a>
                         </div>

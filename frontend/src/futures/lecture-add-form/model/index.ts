@@ -1,0 +1,1 @@
+export { addLectrue } from './addLecture'

@@ -15,15 +15,9 @@ export default function DireactionPage() {
 
     useEffect(() => {
         dispatch(getDirection(Number(id))).unwrap()
-        .then(() => {
-            console.log("Direction: ", direction)
-        })
-        .catch((error : Error) => {
-            console.log('message', error.message)
-        })
     }, [direction])
     
     return <div className="direction-page" style={{ width: "100%", height: "100%", overflowY: "scroll" }}>
-        <DirectionBlock direction={direction} />
+        <DirectionBlock directionId={Number(id)} />
     </div>
 }

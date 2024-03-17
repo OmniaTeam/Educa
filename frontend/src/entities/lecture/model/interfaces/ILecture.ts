@@ -1,5 +1,8 @@
 export interface ILecture {
     lectureId : number;
     lectureName : string;
-    subjectId : number
+    subjectId : number;
+    lectureText : string;
+    lectureSummary : boolean;
+    lectureFiles : boolean
 } 

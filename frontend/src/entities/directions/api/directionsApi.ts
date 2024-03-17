@@ -28,7 +28,7 @@ export const directionsApi = baseApi.injectEndpoints({
 				})
 			})
 		}),
-		changeDirectionInfo : build.mutation<any, { id : number, name : string, director : string }>({
+		changeDirectionInfo : build.mutation<any, { id : number, name : string, departmentId : number }>({
 			query : ( args ) => ({
 				url : "/direction/edit",
 				headers : {
@@ -38,7 +38,7 @@ export const directionsApi = baseApi.injectEndpoints({
 				redirect : "follow",
 				body : JSON.stringify({
 					"id" : args.id,
-					"director" : args.director,
+					"departmentId" : args.departmentId,
 					"name" : args.name
 				})
 			})

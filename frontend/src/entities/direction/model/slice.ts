@@ -17,7 +17,7 @@ export const IDirectionSlice = createSlice({
         builder.addMatcher(
             directionApi.endpoints.getDirectionInfo.matchFulfilled,
             (state, action : any) => {
-                state.departmentId = action.payload.id,
+                state.directionId = action.payload.id,
                 state.directionName = action.payload.name,
                 state.departmentId = action.payload.departmentId
             }

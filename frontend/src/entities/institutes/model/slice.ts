@@ -14,7 +14,6 @@ export const IInstitutesSlice = createSlice({
         builder.addMatcher(
             institutesApi.endpoints.getInstitutes.matchFulfilled,
             (state, action : any) => {
-                console.log("Institutes: ", action.payload)
                 state.institutes = action.payload
             }
         )

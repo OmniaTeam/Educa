@@ -17,19 +17,7 @@ export default function DepartmentPage() {
 
     useEffect(() => {
         dispatch(getDepartment(Number(id))).unwrap()
-        .then(() => {
-            console.log("Deps: ", department)
-        })
-        .catch((error : Error) => {
-            console.log('message', error.message)
-        })
         dispatch(getDirections(Number(id))).unwrap()
-        .then(() => {
-            console.log("Inst: ", directions)
-        })
-        .catch((error : Error) => {
-            console.log('message', error.message)
-        })
     }, [department, directions])
 
     return <div className='department-page' style={{ width: "100%", height: "100%", overflowY: "scroll" }}>

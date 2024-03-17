@@ -14,7 +14,8 @@ import {
     IDepartmentSlice, 
     IDepartmetsSlice,
     IDirectionSlice,
-    IDirectionsSlice
+    IDirectionsSlice,
+    ISudentsSlice
 } from '../../entities/index';
 
 
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
     department : IDepartmentSlice.reducer,
     departments : IDepartmetsSlice.reducer,
     direction : IDirectionSlice.reducer,
-    directions : IDirectionsSlice.reducer
+    directions : IDirectionsSlice.reducer,
+    students : ISudentsSlice.reducer
 })
 
 export const setupStore = () => configureStore({

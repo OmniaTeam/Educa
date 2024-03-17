@@ -1,0 +1,1 @@
+export { TeacherAddForm } from './teacherAddForm'

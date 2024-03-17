@@ -8,4 +8,9 @@ export * from './institutes/index';
 export * from './departments/index';
 export * from './directions-block/index';
 export * from './department-block/index';
-export * from './direction-block/index'
+export * from './direction-block/index';
+export * from './students-block/index';
+export * from './teacher-subjects/index';
+export * from './teacher-card/index'
+export * from './teachers/index';
+export * from './moderation-block/index'

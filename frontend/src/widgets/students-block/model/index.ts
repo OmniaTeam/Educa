@@ -1,0 +1,1 @@
+export { getDirectionStudents } from './getDirectionStudents'

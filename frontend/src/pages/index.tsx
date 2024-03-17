@@ -12,11 +12,13 @@ import InstitutesPage from "./application/institutesPage/index";
 import InstitutePage from "./application/institutePage/index";
 import DepartmentPage from "./application/departmentPage/index";
 import DireactionPage from "./application/directionPage/index";
+import ModerationPage from "./moderationPage/index";
 
 export const Routing = () => {
     return (
         <Routes>
             <Route path="/" Component={IndexPage} />
+            <Route path="/moderation" Component={ModerationPage} />
             <Route path="/auth" Component={AuthPage} />
             <Route path="/application" Component={AppLayout}>
                 <Route path="" Component={HomePage} />

@@ -41,4 +41,6 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
 
     List<StudentEntity> findAllByDirectionId(Long directionId);
 
+
+
 }

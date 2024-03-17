@@ -38,10 +38,9 @@ export const FavoritesBlock = (props: FavoriteSubjectsProps) => {
                         key={index}
                         lectureId={value.id}
                         lectureName={value.name}
-                        lectureTeacher={value.teacherFio}
-                        lectureSemester={value.lectureSemester} 
+                        lectureSemester={value.lectureSemester}
                         subjectName={'Наименование предмета'}
-                    />
+                        lectureText={value.text} lectureFiles={value.files} lectureSummary={value.summary}/>
                 )}{}</>
             }
         </div>

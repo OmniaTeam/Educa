@@ -11,4 +11,5 @@ export * from './favorites/index';
 export * from './departmet/index';
 export * from './departments/index';
 export * from './direction/index';
-export * from './directions/index'
+export * from './directions/index';
+export * from './students/index'

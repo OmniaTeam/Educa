@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { DirectionsBlock } from "../../index";
+import { DirectionsBlock, Teachers } from "../../index";
 import { IDepartment, IDirections } from "../../../entities/index";
 import { BaseModal } from "../../../shared/index";
 import { DepartmentChangeForm } from "../../../futures/index";
@@ -38,6 +38,7 @@ export const DepartmentBlock = (props: DepartmentBlockProps) => {
                 </div>
             </div>
             <DirectionsBlock directions={props.directions} department={props.department}/>
+            <Teachers departmentId={props.department.departmentId}/>
         </motion.div>
         <AnimatePresence>
             {isEditModalOpen

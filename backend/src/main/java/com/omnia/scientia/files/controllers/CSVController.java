@@ -27,6 +27,7 @@ public class CSVController {
         try {
             var fileEntity = fileService.create(file);
             var response = csvMaster.read(fileEntity);
+            fileService.deleteFile(fileEntity);
             if (!response.isEmpty()){
                 return new ResponseEntity<>(response,HttpStatusCode.valueOf(200));
             }

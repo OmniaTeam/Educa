@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 public class CSVregDTO {
     private String login;
     private String password;
+    private String fio;
     private ERole role;
-    private String relation;
+    private String position;
+    private Long departmentId;
+    private Integer semesterNumber;
+    private Long directionId;
 }

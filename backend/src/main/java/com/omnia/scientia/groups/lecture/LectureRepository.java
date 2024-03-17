@@ -10,7 +10,9 @@ public interface LectureRepository extends JpaRepository<LectureEntity, Long> {
 
     List<LectureEntity> findAllBySubjectId(Long subjectId);
 
-    List<LectureEntity> findAllBySummaryFalse();
+    List<LectureEntity> findAllBySummaryFalseAndTextNotNull();
 
     List<LectureEntity> findAllByFilesTrueAndSubjectId(Long subjectId);
+
+
 }

@@ -1,27 +1,43 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { BaseModal } from "../base-modal/index";
 import { AnimatePresence, motion } from "framer-motion";
-import { ConspectModal, FormSubmit } from "../index";
+import { Complete, ConspectModal, FormInput, FormSubmit } from "../index";
+
+import MarkdownEditor from "../markdown-editor/MarkdownEditor";
 
 import './styles.scss';
+import { FileUpload } from "../../../futures/index";
 
 interface LectureCardProps {
     lectureId: number;
     lectureName: string;
-    lectureTeacher: string;
     lectureSemester: number;
     isTeacher?: boolean;
     subjectName: string;
+    lectureText: string;
+    lectureFiles: boolean;
+    lectureSummary: boolean
 }
 
 export const LectureCard = (props: LectureCardProps) => {
-    const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
     const [isModalReaderOpen, setIsReaderModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [isConspectEdit, setIsConspectEdit] = useState<boolean>(false);
     const [isLectureReader, setIsLectureReader] = useState<boolean>(false);
     const [isLectureTextReader, setIsLectureTextReader] = useState<boolean>(false);
     const [isMarked, setIsMarked] = useState<boolean>(false);
+    const [isFilePinningModalOpen, setIsFilePinningModalOpen] = useState<boolean>(false)
+
+    const [sumaryText, setSummaryText] = useState<string>('');
+    const [lectureText, setLectureText] = useState<string>(props.lectureText);
+    
+    const [isQuestionModalOpen, setIsQuestionModalOpen] = useState<boolean>(false);
+    const [question, setQuestion] = useState<string>('');
+    const [answer, setAnswer] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [sumaryId, setSumaryId] = useState<number>(-1)
+
+    const [completeModal, setCompleteModal] = useState<boolean>(false)
 
     const handleToggleMark = async () => {
         try {
@@ -43,6 +59,122 @@ export const LectureCard = (props: LectureCardProps) => {
             console.error('Network error:', error);
         }
     };
+
+    const handleDownloadLecture = async () => {
+        try {
+            const response = await fetch(`https://educa.theomnia.ru/api/files/list/${props.lectureId}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.length > 0) {
+                    const file_id = data[0].id;
+                    window.open(`https://educa.theomnia.ru/api/files/download/id/${file_id}`);
+                } else {
+                    console.error('No files found for this lecture');
+                }
+            } else {
+                console.error('Failed to fetch lecture files');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+        }
+    };
+
+    const handleGetSummary = async () => {
+        try {
+            const response = await fetch(`https://educa.theomnia.ru/api/summary/get/lecture/${props.lectureId}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.length > 0) {
+                    const summaryText = data[0].text;
+                    const summaryId = data[0].id
+                    setSummaryText(summaryText)
+                    setSumaryId(summaryId)
+                    setIsReaderModalOpen(true);
+                } else {
+                    console.error('No data found for this lecture');
+                }
+            } else {
+                console.error('Failed to fetch lecture data');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+        }
+    };
+
+    const handlQeuestion = async () => {
+        try {
+            setIsQuestionModalOpen(false)
+            setIsLoading(true);
+            const response = await fetch(`https://educa.theomnia.ru/api/request/question/lecture/id/${props.lectureId}`, 
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: question,
+                    }),
+                }
+            );
+            if (response.ok) {
+                const data = await response.text();
+                setAnswer(data)
+                console.log(data)
+            } else {
+                console.error('No have answer')
+            }
+        } catch (error) {
+            console.error('Network error', error)
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handleSummaryChange = async () => {
+        try {
+            const response = await fetch(`https://educa.theomnia.ru/api/summary/edit`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id : sumaryId,
+                    lectureId : props.lectureId,
+                    text : sumaryText
+                })
+            });
+            if (response.ok) {
+                setIsReaderModalOpen(false)
+                setIsLectureReader(false)
+                setCompleteModal(true);
+            } else {
+                console.error('Doest work')
+            }
+        } catch (error) {
+            console.error('Network error', error)
+        }
+    }
+
+    const handleLectureChange = async () => {
+        try {
+            const response = await fetch(`https://educa.theomnia.ru/api/lecture/edit/text/${props.lectureId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: lectureText
+            });
+            if (response.ok) {
+                setIsLectureTextReader(false)
+                setIsLectureReader(false)
+                setCompleteModal(true);
+            } else {
+                console.error('Doest work')
+            }
+        } catch (error) {
+            console.error('Network error', error)
+        }
+    }
     
     return <>
         <div className="lecture-card">
@@ -80,35 +212,83 @@ export const LectureCard = (props: LectureCardProps) => {
                 </div>
                 <div className="lecture-card--meta">
                     <p className="lecture-card--meta__info">Предмет: {props.subjectName}</p>
-                    <p className="lecture-card--meta__info" style={props.isTeacher ? {display: "none"} : {}}>Лектор: {props.lectureTeacher}</p>
                     <p className="lecture-card--meta__info">Курс: {Math.round(props.lectureSemester / 2)}</p>
                     <p className="lecture-card--meta__info">Семестр: {props.lectureSemester % 2 === 0 ? "Весна" : "Осень"}</p>
                 </div>
             </div>
-            <div className="lecture-card--links">
-                <button className="lecture-card--link" onClick={() => setIsDownloadModalOpen(true)} >Скачать</button>
-                <button className="lecture-card--link" onClick={() => setIsLectureReader(true)}>Посмотреть</button>
-            </div>
+            {props.isTeacher
+                ? <>{!props.lectureFiles
+                    ? <div className="lecture-card--links">
+                        <button className="lecture-card--link" onClick={() => setIsFilePinningModalOpen(true)}>Прикрепить файл</button>
+                        <button className="lecture-card--link" onClick={() => setIsLectureReader(true)}>Посмотреть</button>
+                    </div>
+                    : <div className="lecture-card--links">
+                        <button className="lecture-card--link" onClick={handleDownloadLecture}>Скачать лекцию</button>
+                        <button className="lecture-card--link" onClick={() => setIsLectureReader(true)}>Посмотреть</button>
+                        <button className="lecture-card--link" style={props.isTeacher ? {display: "none"} : {}} onClick={() => setIsQuestionModalOpen(true)}>Задать вопрос</button>
+                    </div>
+                }{}</>
+                : <>{!props.lectureFiles
+                    ? <div className="lecture-card--links">
+                        <button className="lecture-card--link" onClick={() => {}}>Ожидайте настройки</button>
+                    </div>
+                    : <div className="lecture-card--links">
+                        <button className="lecture-card--link" onClick={handleDownloadLecture}>Скачать лекцию</button>
+                        <button className="lecture-card--link" onClick={() => setIsLectureReader(true)}>Посмотреть</button>
+                        <button className="lecture-card--link" style={props.isTeacher ? {display: "none"} : {}} onClick={() => setIsQuestionModalOpen(true)}>Задать вопрос</button>
+                    </div>
+                }{}</>
+            }
         </div>
         <AnimatePresence>
-            {isDownloadModalOpen
-                && <BaseModal onClose={() => setIsDownloadModalOpen(false)}>
+            { completeModal
+                && <BaseModal onClose={() => setCompleteModal(false)}>
+                    <div className='modal--details'>
+                        <Complete/>
+                    </div>
+                </BaseModal>
+            }
+        </AnimatePresence>
+        <AnimatePresence>
+            {isLoading && (
+                <BaseModal onClose={() => setIsLoading(false)}>
+                    <div>Загрузка...</div>
+                </BaseModal>
+            )}
+        </AnimatePresence>
+        <AnimatePresence>
+            {!isLoading && answer !== '' && (
+                <BaseModal onClose={() => setAnswer('')}>
+                    <div>{answer}</div>
+                </BaseModal>
+            )}
+        </AnimatePresence>
+        <AnimatePresence>
+            {isQuestionModalOpen
+                && <BaseModal onClose={() => setIsQuestionModalOpen(false)}>
                     <div className="lecture-download">
-                        <h3 className="lecture-download--title">{props.lectureName}</h3>
+                        <h3 className="lecture-download--title">Задайте вопрос по лекции</h3>
                         <div className="lecture-download--buttons">
-                            <a className="lecture-download--link" href="" download>Скачать лекцию</a>
-                            <a className="lecture-download--link" href="" download>Скачать конспект</a>
+                            <FormInput inputType={"text"} labelName={"Введите вопрос"} animation={{
+                                initial: {}, animate: {}, transition: {}
+                            }} onChangeHandle={(e: ChangeEvent<HTMLInputElement>) => {
+                                setQuestion(e.target.value)
+                            } }/>
+                            <FormSubmit inputType={"submit"} inputValue={"Задать"} animation={{
+                                initial: {}, animate: {}, transition: {}}} clickHandle={handlQeuestion}/>
                         </div>
                     </div>
                 </BaseModal>
             }
+        </AnimatePresence>
+        <AnimatePresence>
             {isLectureReader
                 && <BaseModal onClose={() => setIsLectureReader(false)}>
                     <div className="lecture-download">
                         <h3 className="lecture-download--title">{props.lectureName}</h3>
                         <div className="lecture-download--buttons">
                             <button className="lecture-download--link" onClick={() => setIsLectureTextReader(true)}>Посмотреть лекцию</button>
-                            <button className="lecture-download--link" onClick={() => setIsReaderModalOpen(true)}>Посмотреть конспект</button>
+                            <button className="lecture-download--link" onClick={props.lectureSummary ? handleGetSummary : () => {}}>{props.lectureSummary ? "Посмотреть конспект" : "Ожидайте генерацию конспекта"}</button>
                         </div>
                     </div>
                 </BaseModal>
@@ -133,19 +313,17 @@ export const LectureCard = (props: LectureCardProps) => {
                             : <h3 className="lecture-conspect--title">{props.lectureName} - Коспект</h3>
                         }
                         {isConspectEdit
-                            ? <textarea className="lecture-conspect--text" name="" id="" style={{width: "calc(100% - 6px)", height: "300px", resize: "none"}}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            ? <textarea onChange={(e) => setSummaryText(e.target.value)} className="lecture-conspect--text" name="" id="" style={{width: "calc(100% - 6px)", height: "300px", resize: "none"}}>
+                                {sumaryText}
                             </textarea>
-                            : <p className="lecture-conspect--text">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
+                            : <MarkdownEditor editable={false} initialText={sumaryText} />
                         }
                         {isConspectEdit
                             ? <FormSubmit inputType={"button"} inputValue={"Сохранить"} animation={{
                                 initial: {},
                                 animate: {},
                                 transition: {}
-                            }} />
+                            }} clickHandle={handleSummaryChange} />
                             : <div></div>
                         }
                         
@@ -172,19 +350,17 @@ export const LectureCard = (props: LectureCardProps) => {
                             : <h3 className="lecture-conspect--title">{props.lectureName} - Лекция</h3>
                         }
                         {isConspectEdit
-                            ? <textarea className="lecture-conspect--text" name="" id="" style={{width: "calc(100% - 6px)", height: "300px", resize: "none"}}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            ? <textarea onChange={(e) => setLectureText(e.target.value)} className="lecture-conspect--text" name="" id="" style={{width: "calc(100% - 6px)", height: "300px", resize: "none"}}>
+                                {lectureText}
                             </textarea>
-                            : <p className="lecture-conspect--text">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
+                            : <MarkdownEditor editable={false} initialText={lectureText} />
                         }
                         {isConspectEdit
                             ? <FormSubmit inputType={"button"} inputValue={"Сохранить"} animation={{
                                 initial: {},
                                 animate: {},
                                 transition: {}
-                            }} />
+                            }} clickHandle={handleLectureChange} />
                             : <div></div>
                         }
                         
@@ -196,12 +372,19 @@ export const LectureCard = (props: LectureCardProps) => {
             {isDeleteModalOpen
                 && <BaseModal onClose={() => setIsDeleteModalOpen(false)}>
                     <div className="lecture-download">
-                        <h3 className="lecture-download--title">{props.lectureName}</h3>
+                        <h3 className="lecture-download--tistle">{props.lectureName}</h3>
                         <div className="lecture-download--buttons">
                             <a className="lecture-download--link" href="">Удалить лекцию</a>
                             <a className="lecture-download--link" href="">Удалить конспект</a>
                         </div>
                     </div>
+                </BaseModal>
+            }
+        </AnimatePresence>
+        <AnimatePresence>
+            {isFilePinningModalOpen
+                && <BaseModal onClose={() => setIsFilePinningModalOpen(false)}>
+                    <FileUpload lectureId={props.lectureId}/>
                 </BaseModal>
             }
         </AnimatePresence>

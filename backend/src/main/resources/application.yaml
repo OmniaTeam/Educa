@@ -13,9 +13,9 @@ spring:
     time-zone: Europe/Moscow
 
 assistant:
-  file_id: asst_WYyT62unT8ej1QE6p9hTZBKT
-  text_id: asst_E9qhIty4vWCat7Hc8nrWa1SS
-  answer_id: asst_0EOWZENxjwmnRZGDpDEll53p
+  file_id: asst_ML8f4PN0z16GPgJluUJnhjKM
+  text_id: asst_KmmS7YxBScDzIiKAIOe5Cqib
+  answer_id: asst_giFtOGHpfuJQm8tMq8g6vRb9
 
 logging:
   file:

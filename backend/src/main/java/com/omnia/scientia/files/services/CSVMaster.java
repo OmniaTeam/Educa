@@ -24,11 +24,7 @@ public class CSVMaster {
     public List<CSVregDTO> read(FileEntity file){
 
             if (Objects.equals(file.getType(), "text/csv")){
-                try {
-                    return csvComponent.parseCsv(file.getPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return csvComponent.parseCsv(file.getPath());
             }
             return null;
 

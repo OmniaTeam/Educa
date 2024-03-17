@@ -1,5 +1,6 @@
 package com.omnia.scientia.groups.lecture;
 
+import com.omnia.scientia.dto.LectureEdit;
 import com.omnia.scientia.groups.institute.InstituteEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,18 @@ public class LectureController {
         }
         return new ResponseEntity<>(null, HttpStatusCode.valueOf(404));
     }
+
+    @PutMapping("/edit/text/{lectureId}")
+    ResponseEntity<?> edit(@RequestBody String text,@PathVariable Long lectureId){
+        var lecture = lectureRepository.findById(lectureId);
+
+        if (lecture.isPresent()) {
+            lecture.get().setText(text);
+            lectureRepository.save(lecture.get());
+            return new ResponseEntity<>(lecture.get(), HttpStatusCode.valueOf(200));
+        }
+        return new ResponseEntity<>(null, HttpStatusCode.valueOf(404));
+    }
+
 
 }

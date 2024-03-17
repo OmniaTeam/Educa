@@ -2,6 +2,7 @@ package com.omnia.scientia.auth.entites;
 
 
 import com.omnia.scientia.dto.UserCreate;
+import com.omnia.scientia.files.entity.CSVregDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long vkId;
     private String fio;
     private String login;
     private String password;
@@ -31,6 +33,13 @@ public UserEntity(UserCreate userCreate) {
     this.password = userCreate.getPassword();
     this.role = userCreate.getRole();
 }
+
+    public UserEntity(CSVregDTO csv) {
+        this.fio = csv.getFio();
+        this.login = csv.getLogin();
+        this.password = csv.getPassword();
+        this.role = csv.getRole();
+    }
 
 
     @Override

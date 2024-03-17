@@ -3,6 +3,7 @@ package com.omnia.scientia.request;
 import com.omnia.scientia.files.entity.FileEntity;
 import com.omnia.scientia.files.entity.FileRepository;
 import com.omnia.scientia.groups.lecture.LectureRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ public class RequestScheduler {
 
 
 
-    //TODO:замена на application/ audio/
-    final private ArrayList<String> audio = new ArrayList<>() {{
-        add("aba");
-    }};
 
-    final private ArrayList<String> files = new ArrayList<>() {{
-        add("boba");
-    }};
+//    final private ArrayList<String> audio = new ArrayList<>() {{
+//        add("aba");
+//    }};
+//
+//    final private ArrayList<String> files = new ArrayList<>() {{
+//        add("boba");
+//    }};
 
 
     public RequestScheduler(RequestMaster requestMaster, FileRepository fileRepository, LectureRepository lectureRepository) {
@@ -34,31 +35,32 @@ public class RequestScheduler {
 
     //Апостол Петр пропускает только туда кому куда назначено
     private int petr(FileEntity fileEntity){
-        var type = fileEntity.getType();
-        if (audio.contains(type)){
-            //TODO:тех долг
-            requestMaster.generateTextWithAudio(fileEntity.getId());
-            return 200;
+        var type = fileEntity.getType().split("/")[0];
+
+        switch (type) {
+            case "audio" -> {
+                return requestMaster.generateTextWithAudio(fileEntity.getId());
+            }
+            case "application" -> {
+                return requestMaster.generateTextWithFile(fileEntity.getId());
+            }
+            default -> {
+                return 404;
+            }
         }
-        if (files.contains(type)){
-//            requestMaster.addSummaryWithFile(fileEntity.getId());
-            return 200;
-        }
-        return 404;
     }
 
 
-    //@Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = 100000)
     public void FileScheduler(){
         var files = fileRepository.findAllByProcessedFalse();
-
         files.forEach(this::petr);
     }
-    //@Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 200000)
     public void TextScheduler(){
-        var lectures = lectureRepository.findAllBySummaryFalse();
+        var lectures = lectureRepository.findAllBySummaryFalseAndTextNotNull();
 
-//        lectures.forEach(lecture -> requestMaster.addSummaryWithText(lecture.getText()));
+        lectures.forEach(lecture -> requestMaster.addSummaryWithText(lecture.getId()));
 
     }
 

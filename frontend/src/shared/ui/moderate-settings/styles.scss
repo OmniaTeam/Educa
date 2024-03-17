@@ -1,0 +1,28 @@
+.moderate-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+    gap: 16px;
+    &--title {
+        font-size: 24px;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+    }
+    &--content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    &--selector {
+        width: 300px;
+        padding: 16px 8px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        border-radius: 8px;
+        border: 2px solid var(--primary-black);
+        background-color: var(--primary-white);
+    }
+}

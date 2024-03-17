@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omnia.scientia.dto.FileUploadResponse;
 import com.omnia.scientia.dto.RetrieveRun;
 import com.omnia.scientia.dto.ThreadRun;
+import com.omnia.scientia.groups.lecture.LectureEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -33,7 +39,7 @@ public class RequesterGPTService {
 
     @Value("${assistant.text_id}")
     @NotNull
-    private String assistantTextId;
+    private String assistantSummaryId;
 
     @Value("${assistant.answer_id}")
     @NotNull
@@ -45,7 +51,7 @@ public class RequesterGPTService {
             FileUploadResponse file = sendFile(filePath);
             log.info("file {}", file);
             Thread.sleep(2000);
-            ThreadRun thread = createAndRunThreadFile(file.getId());
+            ThreadRun thread = createAndRunThreadFile(assistantFileId, "Сделай полный конспект из файла согласно твоим инструкциям, язык разметки markdown",file.getId());
             if (checkStatusRun(thread.getThreadId(), thread.getId()) == null) {
                 log.error("too long to process message");
                 clearAssistant(file.getId(), thread.getThreadId());
@@ -62,15 +68,20 @@ public class RequesterGPTService {
         }
     }
 
-    public String summaryTextLecture(String text) {
+    public String summaryTextLecture(LectureEntity entity) {
         try {
-            String req = String.format("Сделай краткий конспект согласно твоим инструкциям, язык разметки markdown для следующего текста:\n%s", text);
-            ThreadRun thread = createAndRunThreadText(req);
+            log.info(entity.getName());
+            String filePath = createTemp(entity);
+            FileUploadResponse file = sendFile(filePath);
+            Thread.sleep(5000);
+            ThreadRun thread = createAndRunThreadFile(assistantSummaryId,"Сделай краткий конспект согласно твоим инструкциям, язык разметки markdown", file.getId());
             if (checkStatusRun(thread.getThreadId(), thread.getId()) == null) {
                 log.error("too long to process message");
             }
             String answer = listMessages(thread.getThreadId());
             log.info("ai answer {}", answer);
+            clearAssistant(file.getId(), thread.getThreadId());
+            deleteTempFile(entity);
             return answer;
 
         }
@@ -80,15 +91,19 @@ public class RequesterGPTService {
         }
     }
 
-    public String summaryAnswerLecture(String lecture, String question) {
+    public String summaryAnswerLecture(LectureEntity lecture, String question) {
         try {
-            String req = String.format("На основе этой лекции\n%s\nОтветь на вопрос\n%s", lecture, question);
-            ThreadRun thread = createAndRunThreadText(req);
+            String filePath = createTemp(lecture);
+            FileUploadResponse file = sendFile(filePath);
+            String req = String.format("На основе лекции из файла ответь на вопрос %s", question);
+            ThreadRun thread = createAndRunThreadFile(assistantAnswerId, req, file.getId());
             if (checkStatusRun(thread.getThreadId(), thread.getId()) == null) {
                 log.error("too long to process message");
             }
             String answer = listMessages(thread.getThreadId());
             log.info("ai answer {}", answer);
+            clearAssistant(file.getId(), thread.getThreadId());
+            deleteTempFile(lecture);
             return answer;
 
         }
@@ -104,7 +119,7 @@ public class RequesterGPTService {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         FileSystemResource file = new FileSystemResource(filePath);
-
+        log.info(filePath);
         body.add("purpose", "assistants");
         body.add("file", file);
         log.info("file {}", file);
@@ -155,7 +170,7 @@ public class RequesterGPTService {
         }
     }
 
-    private ThreadRun createAndRunThreadFile(String fileId) {
+    private ThreadRun createAndRunThreadFile(String assistantId, String content, String fileId) {
 
         String body = String.format("""
       {
@@ -163,19 +178,19 @@ public class RequesterGPTService {
       "thread": {
         "messages": [
           {"role": "user",
-          "content": "Сделай полный конспект из файла согласно твоим инструкциям, язык разметки markdown",
+          "content": "%s",
           "file_ids": ["%s"]
           }
         ]
       }
     }
                 """,
-                assistantFileId, fileId);
+                assistantId, content, fileId);
 
        return createAndRunThread(body);
     }
 
-    private ThreadRun createAndRunThreadText(String text) {
+    private ThreadRun createAndRunThreadText(String fileId, String text) {
 
         String body = String.format("""
       {
@@ -183,13 +198,14 @@ public class RequesterGPTService {
       "thread": {
         "messages": [
           {"role": "user",
-          "content": "%s"
+          "content": "%s",
+          "file_ids": ["%s"]
           }
         ]
       }
     }
                 """,
-                assistantTextId, text);
+                assistantSummaryId, text);
 
         return createAndRunThread(body);
     }
@@ -306,5 +322,39 @@ public class RequesterGPTService {
         headers.set("Authorization", String.format("Bearer %s", tokenGPT) );
         headers.set("OpenAI-Beta", "assistants=v1");
         return headers;
+    }
+
+    private String createTemp(LectureEntity lecture) {
+        try {
+            if (!lecture.getText().isEmpty()) {
+                var path = "/var/www/educa.theomnia.ru/files/";
+                String fullpath = path + lecture.getId() + ".txt";
+                File file = new File(fullpath);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write(lecture.getText());
+                writer.close();
+                System.out.println("Файл успешно создан: " + file.getAbsolutePath());
+                return fullpath;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void deleteTempFile(LectureEntity lecture) {
+        var filePath = "/var/www/educa.theomnia.ru/files/" + lecture.getId() + ".txt";
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("Файл успешно удален: " + filePath);
+            } else {
+                System.out.println("Ошибка при удалении файла: " + filePath);
+            }
+        } else {
+            System.out.println("Файл не найден для удаления: " + filePath);
+        }
     }
 }
